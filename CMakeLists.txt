@@ -35,7 +35,10 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(test_onewire main.c )
+add_executable(test_onewire 
+        main.c
+        modules/temperature/ds18b20
+)
 
 add_subdirectory(modules/onewire_library)
 
