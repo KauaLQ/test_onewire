@@ -28,6 +28,8 @@ set(PICO_BOARD pico_w CACHE STRING "Board type")
 # Pull in Raspberry Pi Pico SDK (must be before project)
 include(pico_sdk_import.cmake)
 
+include(${CMAKE_CURRENT_LIST_DIR}/FreeRTOS/portable/ThirdParty/GCC/RP2040/FreeRTOS_Kernel_import.cmake)
+
 project(test_onewire C CXX ASM)
 
 # Initialise the Raspberry Pi Pico SDK
@@ -38,6 +40,7 @@ pico_sdk_init()
 add_executable(test_onewire 
         main.c
         modules/temperature/ds18b20
+        modules/RTOS_friendly/ds18b20
 )
 
 add_subdirectory(modules/onewire_library)
@@ -51,7 +54,10 @@ pico_enable_stdio_usb(test_onewire 1)
 
 # Add the standard library to the build
 target_link_libraries(test_onewire
-        pico_stdlib)
+        pico_stdlib
+        FreeRTOS-Kernel
+        FreeRTOS-Kernel-Heap4
+)
 
 # Add the standard include files to the build
 target_include_directories(test_onewire PRIVATE
